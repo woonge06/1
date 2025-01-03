@@ -34,3 +34,152 @@
 * 주요 연산 구현
   Circular 링크드리스트를 구현하기 위해서는 헤드 노드와 테일 노드를 연결시켜야합니다. 따라서 테일 노드는 NULL포인터가 아닌 헤드노드를 다시 찾는 순간으로 바꾸고 새로운 테일 노드의 이전 노드 포인터와 다음 노드 포인터(헤드)를 업데이트 해주고 헤드 노드에 이전 노드 포인터를 업데이트 해주어야합니다.
 ---------------
+* 코드
+```ruby
+  #include <iostream>
+using namespace std;
+//노드 struct 구현
+struct NODE 
+{
+	int nData;
+	NODE* nextNode;
+};
+//링크드리스트 클래스 생성
+class LinkedList 
+{
+private:
+	NODE* head;
+	NODE* tail;
+public:
+	LinkedList() 
+	{
+		//헤드와 테일의 포인터를 초기화
+		head = NULL;
+		tail = NULL;
+	}
+	//첫 번째(헤드) 노드 추가
+	void addFrontName(int n);
+	//마지막(테일) 노드 추가
+	void addNode(int n);
+	//노드 삽입
+	void insertNode(NODE* prevNode, int n);
+	//노드 삭제
+	void deleteNode(NODE* prevNode);
+	//첫 번쨰 노드 가져오기
+	NODE* getHead() 
+	{
+		return head;
+	}
+	//LinkedList 출력
+	void display(NODE* head);
+};
+//첫 번쨰 노드 추가
+void LinkedList::addFrontName(int n)
+{
+	NODE* temp = new NODE;
+	//temp의 데이터는 n
+	temp->nData = n;
+	//LinkedList가 비어있으면
+	if (head == NULL)
+	{
+		//첫 NODE는 temp
+		head = temp;
+		//마지막 NODE는 temp
+		tail = temp;
+	}
+	//LinkedList에 데이터가 있으면
+	else
+	{
+		//temp의 nextNode는 head
+		temp->nextNode = head;
+		//head는 temp
+		head = temp;
+	}
+}
+//마지막에 노드 추가
+void LinkedList::addNode(int n)
+{
+	NODE* temp = new NODE;
+	//temp의 데이터는 n
+	temp->nData = n;
+	//temp의 nextNode = Null
+	temp->nextNode = NULL;
+	//LinkedList가 비어있으면
+	if (head == NULL)
+	{
+		//첫 노드는 temp
+		head = temp;
+		//마지막 노드는 temp
+		tail = temp;
+	}
+	//LinkedList에 데이터가 있으면
+	else
+	{
+		//현재 마지막 노드의 nextNode는 temp
+		tail->nextNode = temp;
+		//마지막 노드는 temp
+		tail = temp;
+	}
+}
+//노드 삽입
+void LinkedList::insertNode(NODE* prevNode, int n)
+{
+	NODE* temp = new NODE;
+	//temp의 데이터는 n
+	temp->nData = n;
+	//temp의 nextNode 저장(삽입 할 앞 node의 nextNode를 temp의 nextNode에 저장)
+	temp->nextNode = prevNode->nextNode;
+	//temp 삽입
+	//temp앞의 NODE의 nextNode를 temp로 저장
+	prevNode->nextNode = temp;
+}
+//노드 삭제
+void LinkedList::deleteNode(NODE* prevNode)
+{
+	//삭제할 노드를 temp에 저장(삭제할 노드의 1단계 전 노드의 nextNode)
+	NODE* temp = prevNode->nextNode;
+	//삭제할 노드를 제외(삭제할 노드의 nextNode를 1단계 전 노드의 nextNode에 저장)
+	prevNode->nextNode = temp->nextNode;
+	//temp 삭제
+	delete temp;
+}
+//LinkedList 출력
+void LinkedList::display(NODE* head)
+{
+	if (head == NULL)
+	{
+		cout << "\n";
+	}
+	else
+	{
+		cout << head->nData << endl;
+		display(head->nextNode);
+	}
+	cout << endl;
+}
+//메인 함수
+int main()
+{
+	LinkedList a;
+	//1추가
+	a.addNode(1);
+	//2추가
+	a.addNode(2);
+	//3추가
+	a.addNode(3);
+	//display
+	cout << "1,2,3을 LinkedList에 추가\n";
+	a.display(a.getHead());
+	//0을 제일 앞에 추가
+	a.addFrontName(0);
+	//1을 네번째에 추가
+	a.insertNode(a.getHead()->nextNode->nextNode, 1);
+	cout << "0을 첫번째에 추가, 1을 네번째에 추가\n";
+	a.display(a.getHead());
+	//세번째 노드 삭제
+	a.deleteNode(a.getHead()->nextNode);
+	//display
+	cout << "세번째 노드를 삭제\n";
+	a.display(a.getHead());
+}
+```
