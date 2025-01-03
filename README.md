@@ -196,6 +196,7 @@ int main()
 * 특징 용어
   * 높이(height) : 자신 -> 리프노드까지의 최대 엣지 수 - 트리의 높이 = 루트노드의 높이
   * 깊이(depth) : 루트 노드 -> 자신까지의 최대 엣지 수
+  * 레벨(Level) : 루트 노드 -> 자신까지의 최대 엣지 수 +1
   * degree : 노드의 자식 수 (서브트리의 수)
 * 트리의 종류
   * 이진 트리(Binary tree) : 각 노드당 자식 노드의 개수가 최대 2개로 제한된 트리
@@ -205,5 +206,107 @@ int main()
   * 포화 이진트리(Perfect Binary tree) : 모든 리프 노드의 depth가 동일한 전 이진트리
   * 완전 이진트리(Complete Binary tree) : 리프 노드를 제외한 트리 부분은 포화 이진트리 이면서, 리프노드들이 왼쪽에서부터 차례로 저장되어 있는 이진 트리
   * 등등 다양한 트리들이 있습니다.
+* 트리 탐색 법 :
+  * 트리 중에서 대표적인 이진 트리를 탐색하는 방법에는 크게 4가지가 있습니다.
+    * 전위순회(Preorder Traversal) : 전위순회는 루트 노드를 먼저 탐색하고 자식 노드를 탐색하는 방식입니다.
+    * 중위순회(inorder traversal) : 중위순회는 왼쪽 자식 노드를 탐색하고, 루트 노드를 탐색하고, 오른쪽 자식 노드를 탐색하는 방식입니다.
+    * 후위순회(postorder traversal) : 후위순회는 왼쪽 자식 노드를 탐색하고, 오른쪽 자식 노드를 탐색하고, 루트 노드를 탐색하는 방식입니다.
+    * 레벨순회(levelorder traversal) : 레벨순회는 루트 노드를 먼저 탐색하고, 그 다음 레벨의 노드를 탐색하는 방식입니다.
 -------------------
 * 코드
+코드는 이진 트리를 만들고, 이진 트리를 순회하는 코드입니다.
+```ruby
+#include <iostream>
+using namespace std;
+//노드 정의
+struct NODE
+{
+	int nData;
+	struct NODE* r_child;
+	struct NODE* l_child;
+};
+//새 노드의 기능 만들기
+struct NODE* new_node(int nData)
+{
+	struct NODE* node_ptr;
+	node_ptr = new NODE();
+	node_ptr->nData = nData;
+	node_ptr->l_child = NULL;
+	node_ptr->r_child = NULL;
+	return node_ptr;
+}
+//전위순회 함수
+void preorder(struct NODE* root)
+{
+	if (root)
+	{
+		cout << root->nData << " ";
+		preorder(root->l_child);
+		preorder(root->r_child);
+	}
+}
+//중위순회 함수
+void inorder(struct NODE* root)
+{
+	if (root)
+	{
+		inorder(root->l_child);
+		cout << root->nData << " ";
+		inorder(root->r_child);
+	}
+}
+//후위순회 함수
+void postorder(struct NODE* root)
+{
+	if (root)
+	{
+		postorder(root->l_child);
+		postorder(root->r_child);
+		cout << root->nData << " ";
+	}
+}
+//리프 기능 확인
+bool is_Leaf(struct NODE* n)
+{
+	if (n->l_child == NULL && n->r_child == NULL) return true;
+	else return false;
+}
+//최대 함수 가져오기
+int get_Max(int a, int b)
+{
+	return a > b ? a : b;
+}
+//깊이 함수 가져오기
+int get_Depth(struct NODE* n)
+{
+	if (is_Leaf(n) || n == NULL) return 0;
+	else
+	{
+		//get_Max + 1을 호출할 때, l_child와 r_child 깊이를 비교합니다
+		return get_Max(get_Depth(n->l_child), get_Depth(n->l_child)) + 1;
+	}
+}
+int main()
+{
+	struct NODE* root;
+	//트리 구현
+	root = new_node(4);
+	root->r_child = new_node(5);
+	root->r_child->r_child = new_node(6);
+	root->l_child = new_node(2);
+	root->l_child->l_child = new_node(1);
+	root->l_child->r_child = new_node(3);
+	//루트 노드 4, 4의 자식 노드 5, 5의 자식 노드 6, 4의 자식 노드 2, 2의 자식 노드 1, 2의 자식 노드 3
+	cout << "전위순회: ";
+	preorder(root);
+	cout << endl;
+	cout << "중위순회: ";
+	inorder(root);
+	cout << endl;
+	cout << "후위순회: ";
+	postorder(root);
+	cout << endl;
+	cout << "깊이(Depth) : " << get_Depth(root) << endl;
+	cout << "레벨(Level) : " << get_Depth(root) + 1;
+}
+```
