@@ -350,3 +350,35 @@ int main()
 ```
 * 출력
 ![image](https://github.com/user-attachments/assets/723bfe60-af85-42d6-a44e-69d8b658bbec)
+-----------------------
+* 덱 : 
+  덱이란 양쪽 끝에서 삽입과 삭제가 모두 가능한 자료 구조의 한 형태로, 큐와 스택을 합친 형태라고 할 수 있습니다.
+* 덱의 종류
+  * 스크롤 : 입력이 한쪽 끝으로만 가능하도록 설정한 덱(입력 제한 덱)
+  * 셀프 : 출력이 한쪽 끝으로만 가능하도록 설정한 덱(출력 제한 덱)
+------------------
+* 코드
+```ruby
+#include <iostream>
+#include <deque>
+using namespace std;
+int main()
+{
+	deque<int> DQ;
+	DQ.push_front(1); //덱의 앞쪽에 1 삽입
+	DQ.push_back(2); //덱의 뒤쪽에 2 삽입
+	DQ.push_front(3); //덱의 앞쪽에 3 삽입 
+	DQ.insert(DQ.begin() + 1, 5); //begin()은 덱의 시작 위치, 시작 위치 +1 = 두 번째 위치이므로 두 번째 위치에 5 삽입
+	cout << DQ.size() << '\n'; //덱의 크기 출력
+	if (!DQ.empty()) //덱이 비어있지 않은경우
+	{
+		cout << "덱이 비어있지 않습니다!" << '\n';
+	}
+	cout << DQ.front() << '\n'; //덱의 앞쪽 첫 번째 요소 출력
+	cout << DQ.back() << '\n'; //덱의 마지막 요소 출력
+	cout << DQ[1] << '\n'; //덱의 두 번쨰 요소 출력
+	return 0;
+}
+```
+* 출력
+  
