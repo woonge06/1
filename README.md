@@ -324,3 +324,4 @@ int main()
 }
 ```
 * 출력
+![image](https://github.com/user-attachments/assets/e96d985a-5113-4ee6-8d0e-0b1ce8863b4b)
