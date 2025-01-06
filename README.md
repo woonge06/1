@@ -217,8 +217,10 @@ int main()
 -------------------
 * 코드
 코드는 이진 트리를 만들고, 이진 트리를 순회하는 코드입니다.
+레벨 순회를 하기 위해선 큐를 이용해야 합니다. 왜냐하면 레벨 순회는 각 노드를 방문한 순서대로 저장하고 이를 처리하기 위해 선입선출 방식이 필요한데, 이때 선입선출 구조로 저장하는 선형 자료구조인 큐가 레벨 순회를 구현하는데 가장 적합하기 때문입니다.
 ```ruby
 #include <iostream>
+#include <queue> // 큐를 사용하기 위한 헤더
 using namespace std;
 //노드 정의
 struct NODE
@@ -267,6 +269,26 @@ void postorder(struct NODE* root)
 		cout << root->nData << " "; //현재 노드값 출력
 	}
 }
+// 레벨순회 함수
+void levelorder(struct NODE* root) {
+	if (root == NULL) return; // 트리가 비어있으면 반환
+
+	queue<struct NODE*> q; // 노드를 저장할 큐 생성
+	q.push(root); // 루트 노드를 큐에 추가
+
+	while (!q.empty()) { // 모든 노드를 처리할 때까지 반복적으로 큐에서 노드를 꺼내고, 그 노드의 자식들을 큐에 추가
+		struct NODE* current = q.front(); // 큐의 앞부분 가져오기
+		q.pop(); // 큐에서 제거
+		cout << current->nData << " "; // 현재 노드값 출력
+
+		if (current->l_child != NULL) {
+			q.push(current->l_child); // 왼쪽 자식 노드가 있으면 큐에 추가
+		}
+		if (current->r_child != NULL) {
+			q.push(current->r_child); // 오른쪽 자식 노드가 있으면 큐에 추가
+		}
+	}
+}
 //리프 기능 확인
 bool is_Leaf(struct NODE* n) {
 	if (n == NULL)
@@ -303,13 +325,13 @@ int main()
 {
 	struct NODE* root; //트리의 루트 노드를 가리키는 포인터 root 선언
 	//트리 구현
-	root = new_node(4);
-	root->r_child = new_node(5);
-	root->r_child->r_child = new_node(6);
+	root = new_node(1);
 	root->l_child = new_node(2);
-	root->l_child->l_child = new_node(1);
-	root->l_child->r_child = new_node(3);
-	//루트 노드 4, 4의 자식 노드 5, 5의 자식 노드 6, 4의 자식 노드 2, 2의 자식 노드 1, 2의 자식 노드 3
+	root->l_child->l_child = new_node(4);
+	root->r_child = new_node(3);
+	root->r_child->l_child = new_node(5);
+	root->r_child->r_child = new_node(6);
+	//루트 노드 1, 1의 왼쪽 자식 노드 2, 2의 왼쪽 자식 노드 4, 1의 오른쪽 자식 노드 3, 3의 왼쪽 자식 노드 5, 3의 오른쪽 자식 노드 6
 	cout << "전위순회 : "; //전위순회 출력
 	preorder(root); //전위순회
 	cout << endl;
@@ -318,6 +340,9 @@ int main()
 	cout << endl;
 	cout << "후위순회 : "; //후위순회 출력
 	postorder(root); //후위순회
+	cout << endl;
+	cout << "레벨순회 : "; //레벨순회 출력
+	levelorder(root); //레벨순회
 	cout << endl;
 	cout << "깊이(Depth) : " << get_Depth(root) << endl; //깊이 출력
 	cout << "레벨(Level) : " << get_Depth(root) + 1; //깊이 +1 한 뒤 출력(레벨)
