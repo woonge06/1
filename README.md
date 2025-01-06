@@ -239,6 +239,26 @@ struct NODE* new_node(int nData)
 	node_ptr->r_child = NULL; //오른쪽 자식 노드 초기화
 	return node_ptr;
 }
+// 레벨순회 함수
+void levelorder(struct NODE* root) {
+	if (root == NULL) return; // 트리가 비어있으면 반환
+
+	queue<struct NODE*> q; // 노드를 저장할 큐 생성
+	q.push(root); // 루트 노드를 큐에 추가
+
+	while (!q.empty()) { // 모든 노드를 처리할 때까지 반복적으로 큐에서 노드를 꺼내고, 그 노드의 자식들을 큐에 추가
+		struct NODE* current = q.front(); // 큐의 앞부분 가져오기
+		q.pop(); // 큐에서 제거
+		cout << current->nData << " "; // 현재 노드값 출력
+
+		if (current->l_child != NULL) {
+			q.push(current->l_child); // 왼쪽 자식 노드가 있으면 큐에 추가
+		}
+		if (current->r_child != NULL) {
+			q.push(current->r_child); // 오른쪽 자식 노드가 있으면 큐에 추가
+		}
+	}
+}
 //전위순회 함수
 void preorder(struct NODE* root)
 {
@@ -267,26 +287,6 @@ void postorder(struct NODE* root)
 		postorder(root->l_child); //왼쪽 자식 노드 호출
 		postorder(root->r_child); //오른쪽 자식 노드 호출
 		cout << root->nData << " "; //현재 노드값 출력
-	}
-}
-// 레벨순회 함수
-void levelorder(struct NODE* root) {
-	if (root == NULL) return; // 트리가 비어있으면 반환
-
-	queue<struct NODE*> q; // 노드를 저장할 큐 생성
-	q.push(root); // 루트 노드를 큐에 추가
-
-	while (!q.empty()) { // 모든 노드를 처리할 때까지 반복적으로 큐에서 노드를 꺼내고, 그 노드의 자식들을 큐에 추가
-		struct NODE* current = q.front(); // 큐의 앞부분 가져오기
-		q.pop(); // 큐에서 제거
-		cout << current->nData << " "; // 현재 노드값 출력
-
-		if (current->l_child != NULL) {
-			q.push(current->l_child); // 왼쪽 자식 노드가 있으면 큐에 추가
-		}
-		if (current->r_child != NULL) {
-			q.push(current->r_child); // 오른쪽 자식 노드가 있으면 큐에 추가
-		}
 	}
 }
 //리프 기능 확인
@@ -332,6 +332,9 @@ int main()
 	root->r_child->l_child = new_node(5);
 	root->r_child->r_child = new_node(6);
 	//루트 노드 1,1의 왼쪽 자식 노드 2,2의 왼쪽 자식 노드 4,1의 오른쪽 자식 노드 3,3의 왼쪽 자식 노드 5,3의 오른쪽 자식 노드 6
+	cout << "레벨순회 : "; //레벨순회 출력
+	levelorder(root); //레벨순회
+	cout << endl;
 	cout << "전위순회 : "; //전위순회 출력
 	preorder(root); //전위순회
 	cout << endl;
@@ -340,9 +343,6 @@ int main()
 	cout << endl;
 	cout << "후위순회 : "; //후위순회 출력
 	postorder(root); //후위순회
-	cout << endl;
-	cout << "레벨순회 : "; //레벨순회 출력
-	levelorder(root); //레벨순회
 	cout << endl;
 	cout << "깊이(Depth) : " << get_Depth(root) << endl; //깊이 출력
 	cout << "레벨(Level) : " << get_Depth(root) + 1; //깊이 +1 한 뒤 출력(레벨)
