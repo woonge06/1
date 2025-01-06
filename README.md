@@ -1,4 +1,4 @@
-#김세웅 1주차 스터디
+#김세웅 1,2주차 스터디
 ----------
 **1주차 스터디 진행 내용** 
 * 링크드리스트 :
@@ -222,8 +222,8 @@ using namespace std;
 struct NODE
 {
 	int nData;
-	struct NODE* r_child;
-	struct NODE* l_child;
+	struct NODE* r_child; //오른쪽 자식 노드 정의
+	struct NODE* l_child; //왼쪽 자식 노드 정의
 };
 //새 노드의 기능 만들기
 struct NODE* new_node(int nData)
@@ -231,64 +231,75 @@ struct NODE* new_node(int nData)
 	struct NODE* node_ptr;
 	node_ptr = new NODE();
 	node_ptr->nData = nData;
-	node_ptr->l_child = NULL;
-	node_ptr->r_child = NULL;
+	node_ptr->l_child = NULL; //왼쪽 자식 노드 초기화
+	node_ptr->r_child = NULL; //오른쪽 자식 노드 초기화
 	return node_ptr;
 }
 //전위순회 함수
 void preorder(struct NODE* root)
 {
-	if (root)
+	if (root) //노드가 존재한다면
 	{
-		cout << root->nData << " ";
-		preorder(root->l_child);
-		preorder(root->r_child);
+		cout << root->nData << " "; //현재 노드값 출력
+		preorder(root->l_child); //왼쪽 자식 노드 호출
+		preorder(root->r_child); //오른쪽 자식 노드 호출
 	}
 }
 //중위순회 함수
 void inorder(struct NODE* root)
 {
-	if (root)
+	if (root) //노드가 존재한다면
 	{
-		inorder(root->l_child);
-		cout << root->nData << " ";
-		inorder(root->r_child);
+		inorder(root->l_child); //왼쪽 자식 노드 호출
+		cout << root->nData << " "; //현재 노드값 출력
+		inorder(root->r_child); //오른쪽 자식 노드 호출
 	}
 }
 //후위순회 함수
 void postorder(struct NODE* root)
 {
-	if (root)
+	if (root) //노드가 존재한다면
 	{
-		postorder(root->l_child);
-		postorder(root->r_child);
-		cout << root->nData << " ";
+		postorder(root->l_child); //왼쪽 자식 노드 호출
+		postorder(root->r_child); //오른쪽 자식 노드 호출
+		cout << root->nData << " "; //현재 노드값 출력
 	}
 }
 //리프 기능 확인
-bool is_Leaf(struct NODE* n)
-{
-	if (n->l_child == NULL && n->r_child == NULL) return true;
-	else return false;
+bool is_Leaf(struct NODE* n) {
+	if (n == NULL)
+	{
+		return false; //n이 null이라면 false
+	}
+	if (n->l_child == 0 && n->r_child == 0)
+	{
+		return true; //만약 노드에 자식 노드가 없다면 리프 노드
+	}
+	return false; //자식 노드가 하나라도 있으면 false
 }
 //최대 함수 가져오기
 int get_Max(int a, int b)
 {
-	return a > b ? a : b;
+	return a > b ? a : b; //최댓값 비교
 }
 //깊이 함수 가져오기
 int get_Depth(struct NODE* n)
 {
-	if (is_Leaf(n) || n == NULL) return 0;
+	if (is_Leaf(n) || n == NULL) //만약 n이 리프 노드이거나 NULL이라면 true
+	{
+		return 0;
+	}
 	else
 	{
-		//get_Max + 1을 호출할 때, l_child와 r_child 깊이를 비교합니다
-		return get_Max(get_Depth(n->l_child), get_Depth(n->l_child)) + 1;
+		if (n == NULL) return 0; // NULL이면 깊이는 0
+		if (is_Leaf(n)) return 1; // 리프 노드는 깊이 1
+		// 왼쪽과 오른쪽 서브트리의 깊이를 비교하여 최댓값에 +1
+		return get_Max(get_Depth(n->l_child), get_Depth(n->r_child)) + 1;
 	}
 }
 int main()
 {
-	struct NODE* root;
+	struct NODE* root; //트리의 루트 노드를 가리키는 포인터 root 선언
 	//트리 구현
 	root = new_node(4);
 	root->r_child = new_node(5);
@@ -297,16 +308,16 @@ int main()
 	root->l_child->l_child = new_node(1);
 	root->l_child->r_child = new_node(3);
 	//루트 노드 4, 4의 자식 노드 5, 5의 자식 노드 6, 4의 자식 노드 2, 2의 자식 노드 1, 2의 자식 노드 3
-	cout << "전위순회: ";
-	preorder(root);
+	cout << "전위순회 : "; //전위순회 출력
+	preorder(root); //전위순회
 	cout << endl;
-	cout << "중위순회: ";
-	inorder(root);
+	cout << "중위순회 : "; //중위순회 출력
+	inorder(root); //중위순회
 	cout << endl;
-	cout << "후위순회: ";
-	postorder(root);
+	cout << "후위순회 : "; //후위순회 출력
+	postorder(root); //후위순회
 	cout << endl;
-	cout << "깊이(Depth) : " << get_Depth(root) << endl;
-	cout << "레벨(Level) : " << get_Depth(root) + 1;
+	cout << "깊이(Depth) : " << get_Depth(root) << endl; //깊이 출력
+	cout << "레벨(Level) : " << get_Depth(root) + 1; //깊이 +1 한 뒤 출력(레벨)
 }
 ```
