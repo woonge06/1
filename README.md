@@ -331,7 +331,7 @@ int main()
 	root->r_child = new_node(3);
 	root->r_child->l_child = new_node(5);
 	root->r_child->r_child = new_node(6);
-	//루트 노드 1, 1의 왼쪽 자식 노드 2, 2의 왼쪽 자식 노드 4, 1의 오른쪽 자식 노드 3, 3의 왼쪽 자식 노드 5, 3의 오른쪽 자식 노드 6
+	//루트 노드 1,1의 왼쪽 자식 노드 2,2의 왼쪽 자식 노드 4,1의 오른쪽 자식 노드 3,3의 왼쪽 자식 노드 5,3의 오른쪽 자식 노드 6
 	cout << "전위순회 : "; //전위순회 출력
 	preorder(root); //전위순회
 	cout << endl;
