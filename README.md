@@ -349,4 +349,4 @@ int main()
 }
 ```
 * 출력
-![image](https://github.com/user-attachments/assets/183ed7f7-a3a1-4e22-a547-6156789a0406)
+![image](https://github.com/user-attachments/assets/723bfe60-af85-42d6-a44e-69d8b658bbec)
