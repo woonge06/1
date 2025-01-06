@@ -232,8 +232,8 @@ struct NODE
 //새 노드의 기능 만들기
 struct NODE* new_node(int nData)
 {
-	struct NODE* node_ptr;
-	node_ptr = new NODE();
+	struct NODE* node_ptr; //NODE 구조체를 가리키는 포인터(동적으로 생성된 노드의 주소를 저장하는 데 사용)
+	node_ptr = new NODE(); //NODE 구조체 크기만큼의 공간을 할당
 	node_ptr->nData = nData;
 	node_ptr->l_child = NULL; //왼쪽 자식 노드 초기화
 	node_ptr->r_child = NULL; //오른쪽 자식 노드 초기화
