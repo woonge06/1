@@ -184,7 +184,7 @@ int main()
 }
 ```
 * 출력
-
+![image](https://github.com/user-attachments/assets/2da3df6b-e528-4f65-ae02-85c1a398b484)
 --------------
 * 트리 : 
   트리란 노드와 노드 사이를 연결하는 edge를 이용하여 계층을 구성하는 대표적인 비선형 자료구조입니다.
