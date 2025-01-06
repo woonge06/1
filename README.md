@@ -36,7 +36,7 @@
 ---------------
 * 코드
 ```ruby
-  #include <iostream>
+#include <iostream>
 using namespace std;
 //노드 struct 구현
 struct NODE 
