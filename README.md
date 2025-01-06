@@ -381,4 +381,4 @@ int main()
 }
 ```
 * 출력
-  
+  ![image](https://github.com/user-attachments/assets/99d59e0b-d405-4060-84be-2afc24ac27fc)
