@@ -183,6 +183,215 @@ int main()
 	a.display(a.getHead());
 }
 ```
+```ruby
+#include <iostream>
+using namespace std;
+struct NODE
+{
+	int nData;
+	NODE *nextNode;
+};
+class LinkedList
+{
+private:
+	NODE *head = new NODE;
+	NODE *tail = new NODE;
+public:
+	LinkedList()
+	{
+		head -> nextNode = tail;
+		tail -> nextNode = NULL;
+	}
+	//맨 앞에 노드 추가
+	void AddFront( int nData )
+	{
+		NODE *newNode = new NODE;
+		newNode -> nData = nData;
+		//노드가 한개도 없는 경우
+		if ( head->nextNode == tail )
+		{
+			head -> nextNode = newNode;
+			newNode -> nextNode = tail;
+		}
+		//노드가 한개 이상인 경우
+		else
+		{
+			newNode -> nextNode = head -> nextNode;
+			head -> nextNode = newNode;
+		}
+	}
+	//맨 뒤에 노드 추가
+	void PushBack( int nData )
+	{
+		//노드가 한개도 없는 경우
+		if ( head->nextNode == NULL )
+		{
+			AddFront( nData );
+		}
+		//노드가 한개 이상인 경우
+		else
+		{
+			//새로운 노드 생성
+			NODE *newNode = new NODE;
+			newNode -> nData = nData;
+			//마지막 노드 찾기
+			NODE *curNode = head -> nextNode;
+			while ( curNode -> nextNode != tail )
+			{
+				curNode = curNode -> nextNode;
+			}
+			//tail 노드 앞에 삽입
+			curNode -> nextNode = newNode;
+			newNode -> nextNode = tail;
+		}
+	}
+	//지정된 노드 뒤에 새 노드를 삽입
+	void InsertNode(NODE *prevNode, int nData)
+	{
+		if ( prevNode == nullptr )
+		{
+			cout << "올바른 노드주소가 아닙니다. 데이터를 삽입할 수 없습니다.\n";
+			return;
+		}
+		NODE *newNode = new NODE;
+		newNode -> nData = nData;
+		//prevNode가 맨 마지막에 있는 노드인 경우
+		if ( prevNode->nextNode == tail )
+		{
+			prevNode -> nextNode = newNode;
+			newNode -> nextNode = tail;
+			return;
+		}
+		//prevNode가 맨 마지막 노드가 아닌 경우
+		newNode -> nextNode = prevNode -> nextNode;
+		prevNode -> nextNode = newNode;
+	}
+	//특정 데이터를 가진 노드 삭제
+	void DeleteNode( int nData )
+	{
+		NODE *targetNode = nullptr;
+		//빈 리스트인 경우
+		if ( head -> nextNode == tail )
+		{
+			cout << "빈 리스트 입니다." << endl;
+			return;
+		}
+		//첫번쨰 노드가 지우려는 노드일 때
+		if ( head -> nextNode -> nData == nData )
+		{
+			targetNode = head -> nextNode;
+			head -> nextNode = targetNode -> nextNode;
+			targetNode = nullptr;
+			delete targetNode;
+			return;
+		}
+		//지우려는 데이터의 이전 노드 찾기
+		NODE *prevNode = head -> nextNode;
+		while ( prevNode -> nextNode != tail )
+		{
+			if ( prevNode -> nextNode -> nData == nData )
+			{
+				targetNode = prevNode -> nextNode;
+				break;
+			}
+			prevNode = prevNode -> nextNode;
+		}
+		//지우려는 노드를 못찾은 경우
+		if ( prevNode -> nextNode == tail )
+		{
+			cout << "해당 데이터는 존재하지 않습니다.\n";
+			targetNode = nullptr;
+			return;
+		}
+		//지우려는 노드를 찾은 경우
+		if ( targetNode -> nextNode == tail ) //현재 노드가 마지막 노드인 경우
+		{
+			prevNode -> nextNode = tail;
+		}
+		else //현재 노드가 마지막 노드가 아닌 경우
+		{
+			prevNode -> nextNode = targetNode -> nextNode;
+		}
+		//지우려는 노드 메모리 해제
+		targetNode -> nextNode = nullptr;
+		targetNode = nullptr;
+		delete targetNode;
+	}
+	//특정 데이터를 가진 노드 찾기
+	NODE *findNode( int nData )
+	{
+		NODE *curNode = head -> nextNode;
+		//리스트 순회하며 데이터 탐색
+		while ( curNode -> nextNode != NULL )
+		{
+			if ( curNode -> nData == nData )
+			{
+				return curNode; //데이터가 일치하는 노드 반환
+			}
+			curNode = curNode -> nextNode;
+		}
+		return nullptr; //데이터를 찾지 못한 경우
+	}
+	//리스트의 모든 데이터 출력
+	void ShowAll()
+	{
+		if ( head -> nextNode == tail )
+		{
+			cout << "빈 리스트입니다." << endl;
+			return;
+		}
+		//첫 노드부터 모든 데이터 조회
+		NODE *curNode = head -> nextNode;
+		while ( true )
+		{
+			cout << curNode -> nData;
+			if ( curNode -> nextNode == tail )
+			{
+				break;
+			}
+			else
+			{
+				cout << "-";
+				curNode = curNode -> nextNode;
+			}
+		}
+		cout << endl;
+	}
+};
+int main()
+{
+	LinkedList linkedList = LinkedList();
+	linkedList.ShowAll();
+	//addFront 예제
+	linkedList.AddFront( 3 );
+	linkedList.ShowAll();
+	linkedList.AddFront( 2 );
+	linkedList.ShowAll();
+	linkedList.AddFront( 1 );
+	linkedList.ShowAll();
+	//pushBack 예제
+	linkedList.PushBack( 4 );
+	linkedList.ShowAll();
+	linkedList.PushBack( 5 );
+	linkedList.ShowAll();
+	//findNode
+	NODE *curNode = linkedList.findNode( 5 );
+	//insert 예제
+	if ( curNode != 0 )
+	{
+		linkedList.InsertNode( curNode, 6 );
+		linkedList.ShowAll();
+	}
+	//deleteNode 예제
+	linkedList.DeleteNode( 1 );
+	linkedList.ShowAll();
+	linkedList.DeleteNode( 6 );
+	linkedList.ShowAll();
+	linkedList.DeleteNode( 5 );
+	linkedList.ShowAll();
+	return 0;
+}
+```
 * 출력
 ![image](https://github.com/user-attachments/assets/2da3df6b-e528-4f65-ae02-85c1a398b484)
 --------------
