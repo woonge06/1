@@ -348,6 +348,308 @@ int main()
 	cout << "레벨(Level) : " << get_Depth(root) + 1; //깊이 +1 한 뒤 출력(레벨)
 }
 ```
+```ruby
+#include <iostream>
+#include <string>
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+#include <queue>
+using namespace std;
+//노드 구조체 정의
+struct NODE
+{
+	int nData;
+	NODE *left_child;
+	NODE *right_child;
+};
+//이진 탐색 트리 클래스 정의
+class CBinarySearchTree
+{
+public:
+	NODE *root;
+	int nTree_size;
+	CBinarySearchTree() //트리 초기화
+	{
+		this->root = NULL;
+		nTree_size = 0;
+	}
+	//트리의 모든 노드를 재귀적으로 제거
+	void deleteAll( NODE *root )
+	{
+		if ( root == NULL ) //노드가 없으면 작업 종료
+		{
+			return;
+		}
+		deleteAll( root -> left_child );
+		deleteAll( root -> right_child );
+		delete root;
+		root = NULL; //포인터가 해제된 메모리 영역 가리킴 방지
+	}
+	//메모리 정리 및 메모리 누수 확인
+	~CBinarySearchTree()
+	{
+		deleteAll( this -> root );
+		this -> root = NULL;  //포인터가 해제된 메모리 영역 가리킴 방지
+		_CrtDumpMemoryLeaks(); //메모리 누수 체크
+	}
+	//새로운 노드 생성
+	NODE *createNode( int nData )
+	{
+		NODE *new_node = new NODE;
+		new_node -> nData = nData;
+		new_node -> left_child = NULL;
+		new_node -> right_child = NULL;
+		return new_node;
+	}
+	//노드를 트리에 추가
+	void AddNode( int nData )
+	{
+		NODE *new_node = createNode(nData);
+		NODE *temp = this -> root; //트리의 루트에서 시작
+		if ( temp == NULL ) //트리가 비어있는 경우
+		{
+			this -> root = new_node;
+			nTree_size++;
+			cout << " 새 노드 추가 성공 " << nData << "\n";
+		}
+		else //트리가 비어있지 않은 경우
+		{
+			while ( true )
+			{
+				if ( temp -> nData >= nData ) //현재 노드 값보다 작거나 같은 경우
+				{
+					if ( temp->left_child == NULL ) //왼쪽 자식이 비어있으면
+					{
+						temp -> left_child = new_node;
+						nTree_size++;
+						break;
+					}
+					else
+					{
+						temp = temp -> left_child; //왼쪽 자식으로 이동
+					}
+				}
+				else if ( temp -> nData < nData ) //현재 노드 값보다 큰 경우
+				{
+					if ( temp -> right_child == NULL ) //오른쪽 자식이 비어있으면
+					{
+						temp -> right_child = new_node;
+						nTree_size++;
+						break;
+					}
+					else
+					{
+						temp = temp -> right_child; //오른쪽 자식으로 이동
+					}
+				}
+			}
+			cout << " 새 노드 추가 성공 " << nData << "\n";
+		}
+	}
+	//트리의 크기 출력
+	void TreeSize()
+	{
+		cout << " 이진 탐색 트리의 크기 :  " << this->nTree_size << "\n";
+	}
+	//트리에서 특정 값을 가진 노드를 검색 
+	NODE *findNode( NODE *temp, int nData )
+	{
+		if ( temp == NULL ) //노드가 NULL이면 값이 없음
+		{
+			cout << "데이터를 찾지 못했습니다!\n";
+			return NULL;
+		}
+		else if ( temp -> nData == nData ) //값이 현재 노드와 일치하면 찾음
+		{
+			cout << "데이터를 찾았습니다!\n";
+			return temp;
+		}
+		else if ( temp -> nData > nData ) //값이 작으면 왼쪽으로 이동
+		{
+			return findNode( temp -> left_child, nData );
+		}
+		else if ( temp -> nData < nData ) //값이 크면 오른쪽으로 이동
+		{
+			return findNode( temp -> right_child, nData );
+		}
+	}
+	//트리에서 특정 값을 가진 노드를 삭제
+	NODE *deleteNode( NODE *root, int nData )
+	{
+		if ( root == NULL ) //노드가 없으면 작업 종료
+		{
+			return root;
+		}
+		if ( nData < root -> nData) //값이 작으면 왼쪽 자식으로 이동
+		{
+			root -> left_child = deleteNode( root -> left_child, nData );
+		}
+		else if ( nData > root -> nData ) //값이 크면 오른쪽 자식으로 이동
+		{
+			root -> right_child = deleteNode( root -> right_child, nData );
+		}
+		else //삭제할 노드를 찾은 경우
+		{
+			NODE *temp;
+			if ( root -> left_child == NULL ) //왼쪽 자식이 없는 경우
+			{
+				temp = root -> right_child; //오른쪽 자식으로 대체
+				delete root;
+				return temp;
+			}
+			else if ( root -> right_child == NULL ) //오른쪽 자식이 없는 경우
+			{
+				temp = root -> left_child; //왼쪽 자식으로 대체
+				delete root;
+				return temp;
+			}
+			else //두 자식이 있는 경우
+			{
+				temp = findMinNode( root -> right_child ); //오른쪽 서브트리의 최소값 찾기
+				root -> nData = temp -> nData; //현재 노드 데이터 교체
+				root -> right_child = deleteNode( root -> right_child, temp -> nData ); //최소값 삭제
+			}
+		}
+		return root;
+	}
+	//오른쪽 서브트리에서 최소값을 가진 노드를 찾음
+	NODE *findMinNode( NODE *root )
+	{
+		NODE *temp = root;
+		while ( temp -> left_child != NULL )
+		{
+			temp = temp -> left_child; //왼쪽으로 계속 이동
+		}
+		return temp;
+	}
+	//중위 순회
+	NODE *inorderTraversal( NODE *root )
+	{
+		if ( root == NULL ) 
+		{
+			return NULL;
+		}
+		inorderTraversal( root->left_child );
+		cout << root -> nData << ' ';
+		inorderTraversal( root -> right_child );
+	}
+	//전위 순회
+	NODE *preorderTraversal( NODE *root )
+	{
+		if ( root == NULL )
+		{
+			return NULL;
+		}
+		cout << root -> nData << ' ';
+		preorderTraversal( root -> left_child );
+		preorderTraversal( root -> right_child );
+	}
+	//후위 순회
+	NODE *postorderTraversal( NODE *root )
+	{
+		if ( root == NULL )
+		{
+			return NULL;
+		}
+		postorderTraversal( root -> left_child );
+		postorderTraversal( root -> right_child );
+		cout << root -> nData << ' ';
+	}
+	//레벨 순회
+	void levelOrderTraversal(NODE* root)
+	{
+		if (root == NULL) // 트리가 비어있으면 종료
+		{
+			cout << "트리가 비어있습니다.\n";
+			return;
+		}
+		queue<NODE*> q; // 노드를 저장할 큐
+		q.push(root);   // 루트 노드를 큐에 추가
+
+		while (!q.empty())
+		{
+			NODE* current = q.front(); // 큐의 앞에 있는 노드 가져오기
+			q.pop();                   // 큐에서 제거
+			cout << current->nData << " "; // 현재 노드의 값 출력
+
+			// 왼쪽 자식이 있으면 큐에 추가
+			if (current->left_child != NULL)
+			{
+				q.push(current->left_child);
+			}
+			// 오른쪽 자식이 있으면 큐에 추가
+			if (current->right_child != NULL)
+			{
+				q.push(current->right_child);
+			}
+		}
+		cout << "\n";
+	}
+
+};
+int main()
+{
+	int nNum;
+	nNum = 1000000; //초기 반복 횟수
+	string Command; //사용자로부터 입력받을 명령어 저장 변수
+	CBinarySearchTree bst; //이진 탐색 트리 객체 생성
+	while ( nNum )
+	{
+		cin >> Command; //명령어 입력
+		if ( Command == "add" )
+		{
+			int nData;
+			cin >> nData;
+			bst.AddNode(nData);
+		}
+		else if ( Command == "find" )
+		{
+			int nData;
+			cin >> nData;
+			bst.findNode( bst.root, nData );
+		}
+		else if ( Command == "delete" )
+		{
+			int nData;
+			cin >> nData;
+			bst.root = bst.deleteNode( bst.root, nData );
+		}
+		else if ( Command == "inorder" )
+		{
+			bst.inorderTraversal( bst.root );
+			cout << "\n";
+		}
+		else if ( Command == "preorder" )
+		{
+			bst.preorderTraversal( bst.root );
+			cout << "\n";
+		}
+		else if ( Command == "postorder" )
+		{
+			bst.postorderTraversal( bst.root );
+			cout << "\n";
+		}
+		else if (Command == "levelorder")
+		{
+			bst.levelOrderTraversal(bst.root);
+			cout << "\n";
+		}
+		else if ( Command == "size" )
+		{
+			bst.TreeSize();
+		}
+		else
+		{
+			cout << "올바른 명령어 양식을 입력해 주세요(add, find, delete, inorder, preorder, postorder, levelorder, size)" << "\n";
+		}
+	}
+	//프로그램 종료 전 트리의 모든 노드 삭제 및 메모리 정리
+	bst.deleteAll( bst.root );
+	bst.root = NULL; //포인터가 해제된 메모리 영역 가리킴 방지
+	return 0;
+}
+```
 * 출력
 ![image](https://github.com/user-attachments/assets/723bfe60-af85-42d6-a44e-69d8b658bbec)
 -----------------------
