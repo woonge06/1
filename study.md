@@ -535,30 +535,28 @@ int main()
 {
 	struct NODE *root; //트리의 루트 노드를 가리키는 포인터 root 선언
 	//트리 구현
-	for ( int nMilion = 0; nMilion < 1000000; nMilion++ )
-	{
-		root = new_node(1);
-		root->l_child = new_node(2);
-		root->l_child->l_child = new_node(4);
-		root->r_child = new_node(3);
-		root->r_child->l_child = new_node(5);
-		root->r_child->r_child = new_node(6);
-		//루트 노드 1,1의 왼쪽 자식 노드 2,2의 왼쪽 자식 노드 4,1의 오른쪽 자식 노드 3,3의 왼쪽 자식 노드 5,3의 오른쪽 자식 노드 6
-		cout << "레벨순회 : "; //레벨순회 출력
-		Levelorder(root); //레벨순회
-		cout << endl;
-		cout << "전위순회 : "; //전위순회 출력
-		Preorder(root); //전위순회
-		cout << endl;
-		cout << "중위순회 : "; //중위순회 출력
-		Inorder(root); //중위순회
-		cout << endl;
-		cout << "후위순회 : "; //후위순회 출력
-		Postorder(root); //후위순회
-		cout << endl;
-		cout << "깊이(Depth) : " << nGet_Depth(root) << endl; //깊이 출력
-		cout << "레벨(Level) : " << nGet_Depth(root) + 1; //깊이 +1 한 뒤 출력(레벨)
-	}
+	root = new_node(1);
+	root->l_child = new_node(2);
+	root->l_child->l_child = new_node(4);
+	root->r_child = new_node(3);
+	root->r_child->l_child = new_node(5);
+	root->r_child->r_child = new_node(6);
+	//루트 노드 1,1의 왼쪽 자식 노드 2,2의 왼쪽 자식 노드 4,1의 오른쪽 자식 노드 3,3의 왼쪽 자식 노드 5,3의 오른쪽 자식 노드 6
+	cout << "레벨순회 : "; //레벨순회 출력
+	Levelorder(root); //레벨순회
+	cout << endl;
+	cout << "전위순회 : "; //전위순회 출력
+	Preorder(root); //전위순회
+	cout << endl;
+	cout << "중위순회 : "; //중위순회 출력
+	Inorder(root); //중위순회
+	cout << endl;
+	cout << "후위순회 : "; //후위순회 출력
+	Postorder(root); //후위순회
+	cout << endl;
+	cout << "깊이(Depth) : " << nGet_Depth(root) << endl; //깊이 출력
+	cout << "레벨(Level) : " << nGet_Depth(root) + 1; //깊이 +1 한 뒤 출력(레벨)
+	return 0;
 }
 ```
 ```ruby
