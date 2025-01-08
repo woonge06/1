@@ -181,6 +181,7 @@ int main()
 	//display
 	cout << "세번째 노드를 삭제\n";
 	LIst.display( LIst.getHead() );
+	return 0;
 }
 ```
 ```ruby
