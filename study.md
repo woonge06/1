@@ -42,14 +42,14 @@ using namespace std;
 struct NODE 
 {
 	int nData;
-	NODE* nextNode;
+	NODE *nextNode;
 };
 //링크드리스트 클래스 생성
 class LinkedList 
 {
 private:
-	NODE* head;
-	NODE* tail;
+	NODE *head;
+	NODE *tail;
 public:
 	LinkedList() 
 	{
@@ -58,29 +58,29 @@ public:
 		tail = NULL;
 	}
 	//첫 번째(헤드) 노드 추가
-	void addFrontName(int n);
+	void AddFrontName( int N );
 	//마지막(테일) 노드 추가
-	void addNode(int n);
+	void AddNode( int N );
 	//노드 삽입
-	void insertNode(NODE* prevNode, int n);
+	void InsertNode( NODE* prevNode, int nData );
 	//노드 삭제
-	void deleteNode(NODE* prevNode);
+	void DeleteNode( NODE* prevNode );
 	//첫 번쨰 노드 가져오기
-	NODE* getHead() 
+	NODE *getHead() 
 	{
 		return head;
 	}
 	//LinkedList 출력
-	void display(NODE* head);
+	void display( NODE* head );
 };
 //첫 번쨰 노드 추가
-void LinkedList::addFrontName(int n)
+void LinkedList::AddFrontName( int nData )
 {
-	NODE* temp = new NODE;
-	//temp의 데이터는 n
-	temp->nData = n;
+	NODE *temp = new NODE;
+	//temp의 데이터는 nData
+	temp->nData = nData;
 	//LinkedList가 비어있으면
-	if (head == NULL)
+	if ( head == NULL )
 	{
 		//첫 NODE는 temp
 		head = temp;
@@ -97,15 +97,15 @@ void LinkedList::addFrontName(int n)
 	}
 }
 //마지막에 노드 추가
-void LinkedList::addNode(int n)
+void LinkedList::AddNode( int nData )
 {
-	NODE* temp = new NODE;
-	//temp의 데이터는 n
-	temp->nData = n;
+	NODE *temp = new NODE;
+	//temp의 데이터는 nData
+	temp->nData = nData;
 	//temp의 nextNode = Null
 	temp->nextNode = NULL;
 	//LinkedList가 비어있으면
-	if (head == NULL)
+	if ( head == NULL )
 	{
 		//첫 노드는 temp
 		head = temp;
@@ -122,11 +122,11 @@ void LinkedList::addNode(int n)
 	}
 }
 //노드 삽입
-void LinkedList::insertNode(NODE* prevNode, int n)
+void LinkedList::InsertNode( NODE *prevNode, int nData )
 {
-	NODE* temp = new NODE;
-	//temp의 데이터는 n
-	temp->nData = n;
+	NODE *temp = new NODE;
+	//temp의 데이터는 nData
+	temp->nData = nData;
 	//temp의 nextNode 저장(삽입 할 앞 node의 nextNode를 temp의 nextNode에 저장)
 	temp->nextNode = prevNode->nextNode;
 	//temp 삽입
@@ -134,53 +134,53 @@ void LinkedList::insertNode(NODE* prevNode, int n)
 	prevNode->nextNode = temp;
 }
 //노드 삭제
-void LinkedList::deleteNode(NODE* prevNode)
+void LinkedList::DeleteNode( NODE *prevNode )
 {
 	//삭제할 노드를 temp에 저장(삭제할 노드의 1단계 전 노드의 nextNode)
-	NODE* temp = prevNode->nextNode;
+	NODE *temp = prevNode->nextNode;
 	//삭제할 노드를 제외(삭제할 노드의 nextNode를 1단계 전 노드의 nextNode에 저장)
 	prevNode->nextNode = temp->nextNode;
 	//temp 삭제
 	delete temp;
 }
 //LinkedList 출력
-void LinkedList::display(NODE* head)
+void LinkedList::display( NODE *head )
 {
-	if (head == NULL)
+	if ( head == NULL )
 	{
 		cout << "\n";
 	}
 	else
 	{
 		cout << head->nData << endl;
-		display(head->nextNode);
+		display( head->nextNode );
 	}
 	cout << endl;
 }
 //메인 함수
 int main()
 {
-	LinkedList a;
+	LinkedList LIst;
 	//1추가
-	a.addNode(1);
+	LIst.AddNode( 1 );
 	//2추가
-	a.addNode(2);
+	LIst.AddNode( 2 );
 	//3추가
-	a.addNode(3);
+	LIst.AddNode( 3 );
 	//display
 	cout << "1,2,3을 LinkedList에 추가\n";
-	a.display(a.getHead());
+	LIst.display(LIst.getHead());
 	//0을 제일 앞에 추가
-	a.addFrontName(0);
+	LIst.AddFrontName( 0 );
 	//1을 네번째에 추가
-	a.insertNode(a.getHead()->nextNode->nextNode, 1);
+	LIst.InsertNode( LIst.getHead()->nextNode->nextNode, 1 );
 	cout << "0을 첫번째에 추가, 1을 네번째에 추가\n";
-	a.display(a.getHead());
+	LIst.display( LIst.getHead() );
 	//세번째 노드 삭제
-	a.deleteNode(a.getHead()->nextNode);
+	LIst.DeleteNode( LIst.getHead()->nextNode );
 	//display
 	cout << "세번째 노드를 삭제\n";
-	a.display(a.getHead());
+	LIst.display( LIst.getHead() );
 }
 ```
 ```ruby
@@ -435,13 +435,13 @@ using namespace std;
 struct NODE
 {
 	int nData;
-	struct NODE* r_child; //오른쪽 자식 노드 정의
-	struct NODE* l_child; //왼쪽 자식 노드 정의
+	struct NODE *r_child; //오른쪽 자식 노드 정의
+	struct NODE *l_child; //왼쪽 자식 노드 정의
 };
 //새 노드의 기능 만들기
-struct NODE* new_node(int nData)
+struct NODE *new_node( int nData )
 {
-	struct NODE* node_ptr; //NODE 구조체를 가리키는 포인터(동적으로 생성된 노드의 주소를 저장하는 데 사용)
+	struct NODE *node_ptr; //NODE 구조체를 가리키는 포인터(동적으로 생성된 노드의 주소를 저장하는 데 사용)
 	node_ptr = new NODE(); //NODE 구조체 크기만큼의 공간을 할당
 	node_ptr->nData = nData;
 	node_ptr->l_child = NULL; //왼쪽 자식 노드 초기화
@@ -449,121 +449,124 @@ struct NODE* new_node(int nData)
 	return node_ptr;
 }
 // 레벨순회 함수
-void levelorder(struct NODE* root) {
-	if (root == NULL) return; // 트리가 비어있으면 반환
+void Levelorder( struct NODE *root ) {
+	if ( root == NULL ) return; // 트리가 비어있으면 반환
 
 	queue<struct NODE*> q; // 노드를 저장할 큐 생성
-	q.push(root); // 루트 노드를 큐에 추가
+	q.push( root ); // 루트 노드를 큐에 추가
 
-	while (!q.empty()) { // 모든 노드를 처리할 때까지 반복적으로 큐에서 노드를 꺼내고, 그 노드의 자식들을 큐에 추가
-		struct NODE* current = q.front(); // 큐의 앞부분 가져오기
+	while ( !q.empty() ) { // 모든 노드를 처리할 때까지 반복적으로 큐에서 노드를 꺼내고, 그 노드의 자식들을 큐에 추가
+		struct NODE *current = q.front(); // 큐의 앞부분 가져오기
 		q.pop(); // 큐에서 제거
 		cout << current->nData << " "; // 현재 노드값 출력
 
-		if (current->l_child != NULL) {
-			q.push(current->l_child); // 왼쪽 자식 노드가 있으면 큐에 추가
+		if ( current->l_child != NULL ) {
+			q.push( current->l_child ); // 왼쪽 자식 노드가 있으면 큐에 추가
 		}
-		if (current->r_child != NULL) {
-			q.push(current->r_child); // 오른쪽 자식 노드가 있으면 큐에 추가
+		if ( current->r_child != NULL ) {
+			q.push( current->r_child ); // 오른쪽 자식 노드가 있으면 큐에 추가
 		}
 	}
 }
 //전위순회 함수
-void preorder(struct NODE* root)
+void Preorder( struct NODE *root )
 {
-	if (root) //노드가 존재한다면
+	if ( root ) //노드가 존재한다면
 	{
 		cout << root->nData << " "; //현재 노드값 출력
-		preorder(root->l_child); //왼쪽 자식 노드 호출
-		preorder(root->r_child); //오른쪽 자식 노드 호출
+		Preorder( root->l_child ); //왼쪽 자식 노드 호출
+		Preorder( root->r_child ); //오른쪽 자식 노드 호출
 	}
 }
 //중위순회 함수
-void inorder(struct NODE* root)
+void Inorder( struct NODE *root )
 {
-	if (root) //노드가 존재한다면
+	if ( root ) //노드가 존재한다면
 	{
-		inorder(root->l_child); //왼쪽 자식 노드 호출
+		Inorder( root->l_child ); //왼쪽 자식 노드 호출
 		cout << root->nData << " "; //현재 노드값 출력
-		inorder(root->r_child); //오른쪽 자식 노드 호출
+		Inorder( root->r_child ); //오른쪽 자식 노드 호출
 	}
 }
 //후위순회 함수
-void postorder(struct NODE* root)
+void Postorder( struct NODE *root )
 {
-	if (root) //노드가 존재한다면
+	if ( root ) //노드가 존재한다면
 	{
-		postorder(root->l_child); //왼쪽 자식 노드 호출
-		postorder(root->r_child); //오른쪽 자식 노드 호출
+		Postorder( root->l_child ); //왼쪽 자식 노드 호출
+		Postorder( root->r_child ); //오른쪽 자식 노드 호출
 		cout << root->nData << " "; //현재 노드값 출력
 	}
 }
 //리프 기능 확인
-bool is_Leaf(struct NODE* n) {
-	if (n == NULL)
+bool is_Leaf( struct NODE *node ) {
+	if ( node == NULL )
 	{
 		return false; //n이 null이라면 false
 	}
-	if (n->l_child == 0 && n->r_child == 0)
+	if ( node -> l_child == 0 && node->r_child == 0 )
 	{
 		return true; //만약 노드에 자식 노드가 없다면 리프 노드
 	}
 	return false; //자식 노드가 하나라도 있으면 false
 }
 //최대 함수 가져오기
-int get_Max(int a, int b)
+int nGet_Max( int nA, int nB )
 {
-	return a > b ? a : b; //최댓값 비교
+	return nA > nB ? nA : nB; //최댓값 비교
 }
 //깊이 함수 가져오기
-int get_Depth(struct NODE* n)
+int nGet_Depth( struct NODE *node )
 {
-	if (is_Leaf(n) || n == NULL) //만약 n이 리프 노드이거나 NULL이라면 true
+	if ( is_Leaf( node ) || node == NULL ) //만약 n이 리프 노드이거나 NULL이라면 true
 	{
 		return 0;
 	}
 	else
 	{
-		if (n == NULL) return 0; // NULL이면 깊이는 0
-		if (is_Leaf(n)) return 1; // 리프 노드는 깊이 1
+		if ( node == NULL ) return 0; // NULL이면 깊이는 0
+		if ( is_Leaf( node ) ) return 1; // 리프 노드는 깊이 1
 		// 왼쪽과 오른쪽 서브트리의 깊이를 비교하여 최댓값에 +1
-		return get_Max(get_Depth(n->l_child), get_Depth(n->r_child)) + 1;
+		return nGet_Max( nGet_Depth( node -> l_child ), nGet_Depth( node -> r_child ) ) + 1;
 	}
 }
 int main()
 {
-	struct NODE* root; //트리의 루트 노드를 가리키는 포인터 root 선언
+	struct NODE *root; //트리의 루트 노드를 가리키는 포인터 root 선언
 	//트리 구현
-	root = new_node(1);
-	root->l_child = new_node(2);
-	root->l_child->l_child = new_node(4);
-	root->r_child = new_node(3);
-	root->r_child->l_child = new_node(5);
-	root->r_child->r_child = new_node(6);
-	//루트 노드 1,1의 왼쪽 자식 노드 2,2의 왼쪽 자식 노드 4,1의 오른쪽 자식 노드 3,3의 왼쪽 자식 노드 5,3의 오른쪽 자식 노드 6
-	cout << "레벨순회 : "; //레벨순회 출력
-	levelorder(root); //레벨순회
-	cout << endl;
-	cout << "전위순회 : "; //전위순회 출력
-	preorder(root); //전위순회
-	cout << endl;
-	cout << "중위순회 : "; //중위순회 출력
-	inorder(root); //중위순회
-	cout << endl;
-	cout << "후위순회 : "; //후위순회 출력
-	postorder(root); //후위순회
-	cout << endl;
-	cout << "깊이(Depth) : " << get_Depth(root) << endl; //깊이 출력
-	cout << "레벨(Level) : " << get_Depth(root) + 1; //깊이 +1 한 뒤 출력(레벨)
+	for ( int nMilion = 0; nMilion < 1000000; nMilion++ )
+	{
+		root = new_node(1);
+		root->l_child = new_node(2);
+		root->l_child->l_child = new_node(4);
+		root->r_child = new_node(3);
+		root->r_child->l_child = new_node(5);
+		root->r_child->r_child = new_node(6);
+		//루트 노드 1,1의 왼쪽 자식 노드 2,2의 왼쪽 자식 노드 4,1의 오른쪽 자식 노드 3,3의 왼쪽 자식 노드 5,3의 오른쪽 자식 노드 6
+		cout << "레벨순회 : "; //레벨순회 출력
+		Levelorder(root); //레벨순회
+		cout << endl;
+		cout << "전위순회 : "; //전위순회 출력
+		Preorder(root); //전위순회
+		cout << endl;
+		cout << "중위순회 : "; //중위순회 출력
+		Inorder(root); //중위순회
+		cout << endl;
+		cout << "후위순회 : "; //후위순회 출력
+		Postorder(root); //후위순회
+		cout << endl;
+		cout << "깊이(Depth) : " << nGet_Depth(root) << endl; //깊이 출력
+		cout << "레벨(Level) : " << nGet_Depth(root) + 1; //깊이 +1 한 뒤 출력(레벨)
+	}
 }
 ```
 ```ruby
 #include <iostream>
 #include <string>
-#define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
 #include <crtdbg.h>
 #include <queue>
+#define _CRTDBG_MAP_ALLOC
 using namespace std;
 //노드 구조체 정의
 struct NODE
