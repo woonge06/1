@@ -38,129 +38,133 @@
 ```ruby
 #include <iostream>
 using namespace std;
+
 //노드 struct 구현
 struct NODE 
 {
 	int nData;
-	NODE *nextNode;
+	NODE *NextNode;
 };
+
 //링크드리스트 클래스 생성
-class LinkedList 
+class CLinkedList 
 {
-private:
-	NODE *head;
-	NODE *tail;
 public:
-	LinkedList() 
+	CLinkedList() 
 	{
 		//헤드와 테일의 포인터를 초기화
-		head = NULL;
-		tail = NULL;
+		m_Head = NULL;
+		m_Tail = NULL;
 	}
 	//첫 번째(헤드) 노드 추가
 	void AddFrontName( int N );
 	//마지막(테일) 노드 추가
 	void AddNode( int N );
 	//노드 삽입
-	void InsertNode( NODE* prevNode, int nData );
+	void InsertNode( NODE* PrevNode, int nData );
 	//노드 삭제
-	void DeleteNode( NODE* prevNode );
+	void DeleteNode( NODE* PrevNode );
 	//첫 번쨰 노드 가져오기
-	NODE *getHead() 
+	NODE *GetHead() 
 	{
-		return head;
+		return m_Head;
 	}
 	//LinkedList 출력
-	void display( NODE* head );
+	void display( NODE* m_Head );
+private:
+	NODE *m_Head;
+	NODE *m_Tail;
 };
+
 //첫 번쨰 노드 추가
-void LinkedList::AddFrontName( int nData )
+void CLinkedList::AddFrontName( int nData )
 {
-	NODE *temp = new NODE;
+	NODE *Temp = new NODE;
 	//temp의 데이터는 nData
-	temp->nData = nData;
+	Temp->nData = nData;
 	//LinkedList가 비어있으면
-	if ( head == NULL )
+	if ( m_Head == NULL )
 	{
 		//첫 NODE는 temp
-		head = temp;
+		m_Head = Temp;
 		//마지막 NODE는 temp
-		tail = temp;
+		m_Tail = Temp;
 	}
 	//LinkedList에 데이터가 있으면
 	else
 	{
-		//temp의 nextNode는 head
-		temp->nextNode = head;
+		//temp의 NextNode는 head
+		Temp -> NextNode = m_Head;
 		//head는 temp
-		head = temp;
+		m_Head = Temp;
 	}
 }
+
 //마지막에 노드 추가
-void LinkedList::AddNode( int nData )
+void CLinkedList::AddNode( int nData )
 {
-	NODE *temp = new NODE;
+	NODE *Temp = new NODE;
 	//temp의 데이터는 nData
-	temp->nData = nData;
-	//temp의 nextNode = Null
-	temp->nextNode = NULL;
+	Temp -> nData = nData;
+	//temp의 NextNode = Null
+	Temp -> NextNode = NULL;
 	//LinkedList가 비어있으면
-	if ( head == NULL )
+	if ( m_Head == NULL )
 	{
 		//첫 노드는 temp
-		head = temp;
+		m_Head = Temp;
 		//마지막 노드는 temp
-		tail = temp;
+		m_Tail = Temp;
 	}
 	//LinkedList에 데이터가 있으면
 	else
 	{
-		//현재 마지막 노드의 nextNode는 temp
-		tail->nextNode = temp;
+		//현재 마지막 노드의 NextNode는 temp
+		m_Tail -> NextNode = Temp;
 		//마지막 노드는 temp
-		tail = temp;
+		m_Tail = Temp;
 	}
 }
+
 //노드 삽입
-void LinkedList::InsertNode( NODE *prevNode, int nData )
+void CLinkedList::InsertNode( NODE *PrevNode, int nData )
 {
-	NODE *temp = new NODE;
+	NODE *Temp = new NODE;
 	//temp의 데이터는 nData
-	temp->nData = nData;
-	//temp의 nextNode 저장(삽입 할 앞 node의 nextNode를 temp의 nextNode에 저장)
-	temp->nextNode = prevNode->nextNode;
+	Temp -> nData = nData;
+	//temp의 NextNode 저장(삽입 할 앞 node의 NextNode를 temp의 NextNode에 저장)
+	Temp -> NextNode = PrevNode -> NextNode;
 	//temp 삽입
-	//temp앞의 NODE의 nextNode를 temp로 저장
-	prevNode->nextNode = temp;
+	//temp앞의 NODE의 NextNode를 temp로 저장
+	PrevNode -> NextNode = Temp;
 }
+
 //노드 삭제
-void LinkedList::DeleteNode( NODE *prevNode )
+void CLinkedList::DeleteNode( NODE *PrevNode )
 {
-	//삭제할 노드를 temp에 저장(삭제할 노드의 1단계 전 노드의 nextNode)
-	NODE *temp = prevNode->nextNode;
-	//삭제할 노드를 제외(삭제할 노드의 nextNode를 1단계 전 노드의 nextNode에 저장)
-	prevNode->nextNode = temp->nextNode;
+	//삭제할 노드를 temp에 저장(삭제할 노드의 1단계 전 노드의 NextNode)
+	NODE *Temp = PrevNode -> NextNode;
+	//삭제할 노드를 제외(삭제할 노드의 NextNode를 1단계 전 노드의 NextNode에 저장)
+	PrevNode -> NextNode = Temp -> NextNode;
 	//temp 삭제
-	delete temp;
+	delete Temp;
 }
+
 //LinkedList 출력
-void LinkedList::display( NODE *head )
+void CLinkedList::display( NODE *m_Head )
 {
-	if ( head == NULL )
+	if ( m_Head != NULL )
 	{
-		cout << "\n";
-	}
-	else
-	{
-		cout << head->nData << endl;
-		display( head->nextNode );
+		cout << m_Head->nData << endl;
+		display( m_Head->NextNode );
 	}
 	cout << endl;
 }
+
 //메인 함수
 int main()
 {
-	LinkedList LIst;
+	CLinkedList LIst;
 	//1추가
 	LIst.AddNode( 1 );
 	//2추가
@@ -169,18 +173,18 @@ int main()
 	LIst.AddNode( 3 );
 	//display
 	cout << "1,2,3을 LinkedList에 추가\n";
-	LIst.display(LIst.getHead());
+	LIst.display(LIst.GetHead());
 	//0을 제일 앞에 추가
 	LIst.AddFrontName( 0 );
 	//1을 네번째에 추가
-	LIst.InsertNode( LIst.getHead()->nextNode->nextNode, 1 );
+	LIst.InsertNode( LIst.GetHead() -> NextNode->NextNode, 1 );
 	cout << "0을 첫번째에 추가, 1을 네번째에 추가\n";
-	LIst.display( LIst.getHead() );
+	LIst.display( LIst.GetHead() );
 	//세번째 노드 삭제
-	LIst.DeleteNode( LIst.getHead()->nextNode );
+	LIst.DeleteNode( LIst.GetHead() -> NextNode );
 	//display
 	cout << "세번째 노드를 삭제\n";
-	LIst.display( LIst.getHead() );
+	LIst.display( LIst.GetHead() );
 	return 0;
 }
 ```
@@ -190,42 +194,42 @@ using namespace std;
 struct NODE
 {
 	int nData;
-	NODE *nextNode;
+	NODE *NextNode;
 };
-class LinkedList
+
+class CLinkedList2
 {
-private:
-	NODE *head = new NODE;
-	NODE *tail = new NODE;
 public:
-	LinkedList()
+	CLinkedList2()
 	{
-		head -> nextNode = tail;
-		tail -> nextNode = NULL;
+		m_Head -> NextNode = m_Tail;
+		m_Tail -> NextNode = NULL;
 	}
+
 	//맨 앞에 노드 추가
 	void AddFront( int nData )
 	{
-		NODE *newNode = new NODE;
-		newNode -> nData = nData;
+		NODE *NewNode = new NODE;
+		NewNode -> nData = nData;
 		//노드가 한개도 없는 경우
-		if ( head->nextNode == tail )
+		if ( m_Head -> NextNode == m_Tail )
 		{
-			head -> nextNode = newNode;
-			newNode -> nextNode = tail;
+			m_Head -> NextNode = NewNode;
+			NewNode -> NextNode = m_Tail;
 		}
 		//노드가 한개 이상인 경우
 		else
 		{
-			newNode -> nextNode = head -> nextNode;
-			head -> nextNode = newNode;
+			NewNode -> NextNode = m_Head -> NextNode;
+			m_Head -> NextNode = NewNode;
 		}
 	}
+
 	//맨 뒤에 노드 추가
 	void PushBack( int nData )
 	{
 		//노드가 한개도 없는 경우
-		if ( head->nextNode == NULL )
+		if ( m_Head->NextNode == NULL )
 		{
 			AddFront( nData );
 		}
@@ -233,163 +237,172 @@ public:
 		else
 		{
 			//새로운 노드 생성
-			NODE *newNode = new NODE;
-			newNode -> nData = nData;
+			NODE *NewNode = new NODE;
+			NewNode -> nData = nData;
 			//마지막 노드 찾기
-			NODE *curNode = head -> nextNode;
-			while ( curNode -> nextNode != tail )
+			NODE *CurNode = m_Head -> NextNode;
+			while ( CurNode -> NextNode != m_Tail )
 			{
-				curNode = curNode -> nextNode;
+				CurNode = CurNode -> NextNode;
 			}
 			//tail 노드 앞에 삽입
-			curNode -> nextNode = newNode;
-			newNode -> nextNode = tail;
+			CurNode -> NextNode = NewNode;
+			NewNode -> NextNode = m_Tail;
 		}
 	}
+
 	//지정된 노드 뒤에 새 노드를 삽입
-	void InsertNode(NODE *prevNode, int nData)
+	void InsertNode(NODE *PrevNode, int nData)
 	{
-		if ( prevNode == nullptr )
+		if ( PrevNode == nullptr )
 		{
 			cout << "올바른 노드주소가 아닙니다. 데이터를 삽입할 수 없습니다.\n";
 			return;
 		}
-		NODE *newNode = new NODE;
-		newNode -> nData = nData;
+		NODE *NewNode = new NODE;
+		NewNode -> nData = nData;
 		//prevNode가 맨 마지막에 있는 노드인 경우
-		if ( prevNode->nextNode == tail )
+		if ( PrevNode -> NextNode == m_Tail )
 		{
-			prevNode -> nextNode = newNode;
-			newNode -> nextNode = tail;
+			PrevNode -> NextNode = NewNode;
+			NewNode -> NextNode = m_Tail;
 			return;
 		}
 		//prevNode가 맨 마지막 노드가 아닌 경우
-		newNode -> nextNode = prevNode -> nextNode;
-		prevNode -> nextNode = newNode;
+		NewNode -> NextNode = PrevNode -> NextNode;
+		PrevNode -> NextNode = NewNode;
 	}
+
 	//특정 데이터를 가진 노드 삭제
 	void DeleteNode( int nData )
 	{
-		NODE *targetNode = nullptr;
+		NODE *TargetNode = nullptr;
 		//빈 리스트인 경우
-		if ( head -> nextNode == tail )
+		if ( m_Head -> NextNode == m_Tail )
 		{
 			cout << "빈 리스트 입니다." << endl;
 			return;
 		}
 		//첫번쨰 노드가 지우려는 노드일 때
-		if ( head -> nextNode -> nData == nData )
+		if ( m_Head -> NextNode -> nData == nData )
 		{
-			targetNode = head -> nextNode;
-			head -> nextNode = targetNode -> nextNode;
-			targetNode = nullptr;
-			delete targetNode;
+			TargetNode = m_Head -> NextNode;
+			m_Head -> NextNode = TargetNode -> NextNode;
+			TargetNode = nullptr;
+			delete TargetNode;
 			return;
 		}
 		//지우려는 데이터의 이전 노드 찾기
-		NODE *prevNode = head -> nextNode;
-		while ( prevNode -> nextNode != tail )
+		NODE *PrevNode = m_Head -> NextNode;
+		while ( PrevNode -> NextNode != m_Tail )
 		{
-			if ( prevNode -> nextNode -> nData == nData )
+			if ( PrevNode -> NextNode -> nData == nData )
 			{
-				targetNode = prevNode -> nextNode;
+				TargetNode = PrevNode -> NextNode;
 				break;
 			}
-			prevNode = prevNode -> nextNode;
+			PrevNode = PrevNode -> NextNode;
 		}
 		//지우려는 노드를 못찾은 경우
-		if ( prevNode -> nextNode == tail )
+		if ( PrevNode -> NextNode == m_Tail )
 		{
 			cout << "해당 데이터는 존재하지 않습니다.\n";
-			targetNode = nullptr;
+			TargetNode = nullptr;
 			return;
 		}
 		//지우려는 노드를 찾은 경우
-		if ( targetNode -> nextNode == tail ) //현재 노드가 마지막 노드인 경우
+		if ( TargetNode -> NextNode == m_Tail ) //현재 노드가 마지막 노드인 경우
 		{
-			prevNode -> nextNode = tail;
+			PrevNode -> NextNode = m_Tail;
 		}
 		else //현재 노드가 마지막 노드가 아닌 경우
 		{
-			prevNode -> nextNode = targetNode -> nextNode;
+			PrevNode -> NextNode = TargetNode -> NextNode;
 		}
 		//지우려는 노드 메모리 해제
-		targetNode -> nextNode = nullptr;
-		targetNode = nullptr;
-		delete targetNode;
+		TargetNode -> NextNode = nullptr;
+		TargetNode = nullptr;
+		delete TargetNode;
 	}
+
 	//특정 데이터를 가진 노드 찾기
-	NODE *findNode( int nData )
+	NODE *FindNode( int nData )
 	{
-		NODE *curNode = head -> nextNode;
+		NODE *CurNode = m_Head -> NextNode;
 		//리스트 순회하며 데이터 탐색
-		while ( curNode -> nextNode != NULL )
+		while ( CurNode -> NextNode != NULL )
 		{
-			if ( curNode -> nData == nData )
+			if ( CurNode -> nData == nData )
 			{
-				return curNode; //데이터가 일치하는 노드 반환
+				return CurNode; //데이터가 일치하는 노드 반환
 			}
-			curNode = curNode -> nextNode;
+			CurNode = CurNode -> NextNode;
 		}
 		return nullptr; //데이터를 찾지 못한 경우
 	}
+
 	//리스트의 모든 데이터 출력
 	void ShowAll()
 	{
-		if ( head -> nextNode == tail )
+		if ( m_Head -> NextNode == m_Tail )
 		{
 			cout << "빈 리스트입니다." << endl;
 			return;
 		}
 		//첫 노드부터 모든 데이터 조회
-		NODE *curNode = head -> nextNode;
+		NODE *CurNode = m_Head -> NextNode;
 		while ( true )
 		{
-			cout << curNode -> nData;
-			if ( curNode -> nextNode == tail )
+			cout << CurNode -> nData;
+			if ( CurNode -> NextNode == m_Tail )
 			{
 				break;
 			}
 			else
 			{
 				cout << "-";
-				curNode = curNode -> nextNode;
+				CurNode = CurNode -> NextNode;
 			}
 		}
 		cout << endl;
 	}
+
+private:
+	NODE *m_Head = new NODE;
+	NODE *m_Tail = new NODE;
 };
+
 int main()
 {
-	LinkedList linkedList = LinkedList();
-	linkedList.ShowAll();
+	CLinkedList2 LinkedList = CLinkedList2();
+	LinkedList.ShowAll();
 	//addFront 예제
-	linkedList.AddFront( 3 );
-	linkedList.ShowAll();
-	linkedList.AddFront( 2 );
-	linkedList.ShowAll();
-	linkedList.AddFront( 1 );
-	linkedList.ShowAll();
+	LinkedList.AddFront( 3 );
+	LinkedList.ShowAll();
+	LinkedList.AddFront( 2 );
+	LinkedList.ShowAll();
+	LinkedList.AddFront( 1 );
+	LinkedList.ShowAll();
 	//pushBack 예제
-	linkedList.PushBack( 4 );
-	linkedList.ShowAll();
-	linkedList.PushBack( 5 );
-	linkedList.ShowAll();
+	LinkedList.PushBack( 4 );
+	LinkedList.ShowAll();
+	LinkedList.PushBack( 5 );
+	LinkedList.ShowAll();
 	//findNode
-	NODE *curNode = linkedList.findNode( 5 );
+	NODE *CurNode = LinkedList.FindNode( 5 );
 	//insert 예제
-	if ( curNode != 0 )
+	if ( CurNode != 0 )
 	{
-		linkedList.InsertNode( curNode, 6 );
-		linkedList.ShowAll();
+		LinkedList.InsertNode( CurNode, 6 );
+		LinkedList.ShowAll();
 	}
 	//deleteNode 예제
-	linkedList.DeleteNode( 1 );
-	linkedList.ShowAll();
-	linkedList.DeleteNode( 6 );
-	linkedList.ShowAll();
-	linkedList.DeleteNode( 5 );
-	linkedList.ShowAll();
+	LinkedList.DeleteNode( 1 );
+	LinkedList.ShowAll();
+	LinkedList.DeleteNode( 6 );
+	LinkedList.ShowAll();
+	LinkedList.DeleteNode( 5 );
+	LinkedList.ShowAll();
 	return 0;
 }
 ```
@@ -436,134 +449,145 @@ using namespace std;
 struct NODE
 {
 	int nData;
-	struct NODE *r_child; //오른쪽 자식 노드 정의
-	struct NODE *l_child; //왼쪽 자식 노드 정의
+	struct NODE *R_child; //오른쪽 자식 노드 정의
+	struct NODE *L_child; //왼쪽 자식 노드 정의
 };
+
 //새 노드의 기능 만들기
-struct NODE *new_node( int nData )
+struct NODE *New_node( int nData )
 {
-	struct NODE *node_ptr; //NODE 구조체를 가리키는 포인터(동적으로 생성된 노드의 주소를 저장하는 데 사용)
-	node_ptr = new NODE(); //NODE 구조체 크기만큼의 공간을 할당
-	node_ptr->nData = nData;
-	node_ptr->l_child = NULL; //왼쪽 자식 노드 초기화
-	node_ptr->r_child = NULL; //오른쪽 자식 노드 초기화
-	return node_ptr;
+	struct NODE *Node_ptr; //NODE 구조체를 가리키는 포인터(동적으로 생성된 노드의 주소를 저장하는 데 사용)
+	Node_ptr = new NODE(); //NODE 구조체 크기만큼의 공간을 할당
+	Node_ptr -> nData = nData;
+	Node_ptr -> L_child = NULL; //왼쪽 자식 노드 초기화
+	Node_ptr -> R_child = NULL; //오른쪽 자식 노드 초기화
+	return Node_ptr;
 }
+
 // 레벨순회 함수
-void Levelorder( struct NODE *root ) {
-	if ( root == NULL ) return; // 트리가 비어있으면 반환
+void Levelorder( struct NODE *Root ) {
+	if ( Root == NULL )
+	{
+		return; // 트리가 비어있으면 반환
+	}
+	queue<struct NODE*> Q; // 노드를 저장할 큐 생성
+	Q.push( Root ); // 루트 노드를 큐에 추가
 
-	queue<struct NODE*> q; // 노드를 저장할 큐 생성
-	q.push( root ); // 루트 노드를 큐에 추가
-
-	while ( !q.empty() ) { // 모든 노드를 처리할 때까지 반복적으로 큐에서 노드를 꺼내고, 그 노드의 자식들을 큐에 추가
-		struct NODE *current = q.front(); // 큐의 앞부분 가져오기
-		q.pop(); // 큐에서 제거
-		cout << current->nData << " "; // 현재 노드값 출력
-
-		if ( current->l_child != NULL ) {
-			q.push( current->l_child ); // 왼쪽 자식 노드가 있으면 큐에 추가
+	while ( !Q.empty() ) { // 모든 노드를 처리할 때까지 반복적으로 큐에서 노드를 꺼내고, 그 노드의 자식들을 큐에 추가
+		struct NODE *Current = Q.front(); // 큐의 앞부분 가져오기
+		Q.pop(); // 큐에서 제거
+		cout << Current -> nData << " "; // 현재 노드값 출력
+		if ( Current -> L_child != NULL ) 
+		{
+			Q.push( Current -> L_child ); // 왼쪽 자식 노드가 있으면 큐에 추가
 		}
-		if ( current->r_child != NULL ) {
-			q.push( current->r_child ); // 오른쪽 자식 노드가 있으면 큐에 추가
+		if ( Current -> R_child != NULL )
+		{
+			Q.push( Current -> R_child ); // 오른쪽 자식 노드가 있으면 큐에 추가
 		}
 	}
 }
+
 //전위순회 함수
-void Preorder( struct NODE *root )
+void Preorder( struct NODE *Root )
 {
-	if ( root ) //노드가 존재한다면
+	if ( Root ) //노드가 존재한다면
 	{
-		cout << root->nData << " "; //현재 노드값 출력
-		Preorder( root->l_child ); //왼쪽 자식 노드 호출
-		Preorder( root->r_child ); //오른쪽 자식 노드 호출
+		cout << Root -> nData << " "; //현재 노드값 출력
+		Preorder( Root -> L_child ); //왼쪽 자식 노드 호출
+		Preorder( Root -> R_child ); //오른쪽 자식 노드 호출
 	}
 }
+
 //중위순회 함수
-void Inorder( struct NODE *root )
+void Inorder( struct NODE *Root )
 {
-	if ( root ) //노드가 존재한다면
+	if ( Root ) //노드가 존재한다면
 	{
-		Inorder( root->l_child ); //왼쪽 자식 노드 호출
-		cout << root->nData << " "; //현재 노드값 출력
-		Inorder( root->r_child ); //오른쪽 자식 노드 호출
+		Inorder( Root -> L_child ); //왼쪽 자식 노드 호출
+		cout << Root -> nData << " "; //현재 노드값 출력
+		Inorder( Root -> R_child ); //오른쪽 자식 노드 호출
 	}
 }
+
 //후위순회 함수
-void Postorder( struct NODE *root )
+void Postorder( struct NODE *Root )
 {
-	if ( root ) //노드가 존재한다면
+	if ( Root ) //노드가 존재한다면
 	{
-		Postorder( root->l_child ); //왼쪽 자식 노드 호출
-		Postorder( root->r_child ); //오른쪽 자식 노드 호출
-		cout << root->nData << " "; //현재 노드값 출력
+		Postorder( Root -> L_child ); //왼쪽 자식 노드 호출
+		Postorder( Root -> R_child ); //오른쪽 자식 노드 호출
+		cout << Root -> nData << " "; //현재 노드값 출력
 	}
 }
+
 //리프 기능 확인
-bool is_Leaf( struct NODE *node ) {
-	if ( node == NULL )
+bool Is_Leaf( struct NODE *Node ) {
+	if ( Node == NULL )
 	{
 		return false; //n이 null이라면 false
 	}
-	if ( node -> l_child == 0 && node->r_child == 0 )
+	if ( Node -> L_child == NULL && Node -> R_child == NULL )
 	{
 		return true; //만약 노드에 자식 노드가 없다면 리프 노드
 	}
 	return false; //자식 노드가 하나라도 있으면 false
 }
+
 //최대 함수 가져오기
 int nGet_Max( int nA, int nB )
 {
 	return nA > nB ? nA : nB; //최댓값 비교
 }
+
 //깊이 함수 가져오기
-int nGet_Depth( struct NODE *node )
+int nGet_Depth( struct NODE *Node )
 {
-	if ( is_Leaf( node ) || node == NULL ) //만약 n이 리프 노드이거나 NULL이라면 true
+	if ( Is_Leaf( Node ) || Node == NULL ) //만약 n이 리프 노드이거나 NULL이라면 true
 	{
 		return 0;
 	}
 	else
 	{
-		if ( node == NULL ) return 0; // NULL이면 깊이는 0
-		if ( is_Leaf( node ) ) return 1; // 리프 노드는 깊이 1
 		// 왼쪽과 오른쪽 서브트리의 깊이를 비교하여 최댓값에 +1
-		return nGet_Max( nGet_Depth( node -> l_child ), nGet_Depth( node -> r_child ) ) + 1;
+		return nGet_Max( nGet_Depth( Node -> L_child ), nGet_Depth( Node -> R_child ) ) + 1;
 	}
 }
+
 int main()
 {
-	struct NODE *root; //트리의 루트 노드를 가리키는 포인터 root 선언
+	struct NODE *Root; //트리의 루트 노드를 가리키는 포인터 root 선언
 	//트리 구현
-	root = new_node(1);
-	root->l_child = new_node(2);
-	root->l_child->l_child = new_node(4);
-	root->r_child = new_node(3);
-	root->r_child->l_child = new_node(5);
-	root->r_child->r_child = new_node(6);
+	Root = New_node(1);
+	Root -> L_child = New_node(2);
+	Root -> L_child -> L_child = New_node(4);
+	Root -> R_child = New_node(3);
+	Root -> R_child -> L_child = New_node(5);
+	Root -> R_child -> R_child = New_node(6);
 	//루트 노드 1,1의 왼쪽 자식 노드 2,2의 왼쪽 자식 노드 4,1의 오른쪽 자식 노드 3,3의 왼쪽 자식 노드 5,3의 오른쪽 자식 노드 6
 	cout << "레벨순회 : "; //레벨순회 출력
-	Levelorder(root); //레벨순회
+	Levelorder( Root ); //레벨순회
 	cout << endl;
 	cout << "전위순회 : "; //전위순회 출력
-	Preorder(root); //전위순회
+	Preorder( Root ); //전위순회
 	cout << endl;
 	cout << "중위순회 : "; //중위순회 출력
-	Inorder(root); //중위순회
+	Inorder( Root ); //중위순회
 	cout << endl;
 	cout << "후위순회 : "; //후위순회 출력
-	Postorder(root); //후위순회
+	Postorder( Root ); //후위순회
 	cout << endl;
-	cout << "깊이(Depth) : " << nGet_Depth(root) << endl; //깊이 출력
-	cout << "레벨(Level) : " << nGet_Depth(root) + 1; //깊이 +1 한 뒤 출력(레벨)
+	cout << "깊이(Depth) : " << nGet_Depth( Root ) << endl; //깊이 출력
+	cout << "레벨(Level) : " << nGet_Depth( Root ) + 1; //깊이 +1 한 뒤 출력(레벨)
+	cout << endl;
 	return 0;
 }
 ```
 ```ruby
-#include <iostream>
-#include <string>
 #include <stdlib.h>
 #include <crtdbg.h>
+#include <iostream>
+#include <string>
 #include <queue>
 #define _CRTDBG_MAP_ALLOC
 using namespace std;
@@ -571,56 +595,61 @@ using namespace std;
 struct NODE
 {
 	int nData;
-	NODE *left_child;
-	NODE *right_child;
+	NODE *Left_child;
+	NODE *Right_child;
 };
+
 //이진 탐색 트리 클래스 정의
-class CBinarySearchTree
+class CTree2
 {
 public:
-	NODE *root;
+	NODE *Root;
 	int nTree_size;
-	CBinarySearchTree() //트리 초기화
+	CTree2() //트리 초기화
 	{
-		this->root = NULL;
+		this->Root = NULL;
 		nTree_size = 0;
 	}
+
 	//트리의 모든 노드를 재귀적으로 제거
-	void deleteAll( NODE *root )
+	void DeleteAll( NODE *Root )
 	{
-		if ( root == NULL ) //노드가 없으면 작업 종료
+		if ( Root == NULL ) //노드가 없으면 작업 종료
 		{
 			return;
 		}
-		deleteAll( root -> left_child );
-		deleteAll( root -> right_child );
-		delete root;
-		root = NULL; //포인터가 해제된 메모리 영역 가리킴 방지
+		DeleteAll( Root -> Left_child );
+		DeleteAll( Root -> Right_child );
+		delete Root;
+		Root = NULL; //포인터가 해제된 메모리 영역 가리킴 방지
 	}
+
 	//메모리 정리 및 메모리 누수 확인
-	~CBinarySearchTree()
+	~CTree2()
 	{
-		deleteAll( this -> root );
-		this -> root = NULL;  //포인터가 해제된 메모리 영역 가리킴 방지
+		DeleteAll( this -> Root );
+		this -> Root = NULL;  //포인터가 해제된 메모리 영역 가리킴 방지
 		_CrtDumpMemoryLeaks(); //메모리 누수 체크
 	}
+
 	//새로운 노드 생성
-	NODE *createNode( int nData )
+	NODE *CreateNode( int nData )
 	{
-		NODE *new_node = new NODE;
-		new_node -> nData = nData;
-		new_node -> left_child = NULL;
-		new_node -> right_child = NULL;
-		return new_node;
+		NODE *New_node = new NODE;
+		New_node -> nData = nData;
+		New_node -> Left_child = NULL;
+		New_node -> Right_child = NULL;
+		return New_node;
 	}
+
 	//노드를 트리에 추가
 	void AddNode( int nData )
 	{
-		NODE *new_node = createNode(nData);
-		NODE *temp = this -> root; //트리의 루트에서 시작
-		if ( temp == NULL ) //트리가 비어있는 경우
+		NODE *New_node = CreateNode( nData );
+		NODE *Temp = this -> Root; //트리의 루트에서 시작
+		if ( Temp == NULL ) //트리가 비어있는 경우
 		{
-			this -> root = new_node;
+			this -> Root = New_node;
 			nTree_size++;
 			cout << " 새 노드 추가 성공 " << nData << "\n";
 		}
@@ -628,183 +657,191 @@ public:
 		{
 			while ( true )
 			{
-				if ( temp -> nData >= nData ) //현재 노드 값보다 작거나 같은 경우
+				if ( Temp -> nData >= nData ) //현재 노드 값보다 작거나 같은 경우
 				{
-					if ( temp->left_child == NULL ) //왼쪽 자식이 비어있으면
+					if ( Temp -> Left_child == NULL ) //왼쪽 자식이 비어있으면
 					{
-						temp -> left_child = new_node;
-						nTree_size++;
+						Temp -> Left_child = New_node;
+						//nTree_size++;
 						break;
 					}
 					else
 					{
-						temp = temp -> left_child; //왼쪽 자식으로 이동
+						Temp = Temp -> Left_child; //왼쪽 자식으로 이동
 					}
 				}
-				else if ( temp -> nData < nData ) //현재 노드 값보다 큰 경우
+				else if ( Temp -> nData < nData ) //현재 노드 값보다 큰 경우
 				{
-					if ( temp -> right_child == NULL ) //오른쪽 자식이 비어있으면
+					if ( Temp -> Right_child == NULL ) //오른쪽 자식이 비어있으면
 					{
-						temp -> right_child = new_node;
-						nTree_size++;
+						Temp -> Right_child = New_node;
+						//nTree_size++;
 						break;
 					}
 					else
 					{
-						temp = temp -> right_child; //오른쪽 자식으로 이동
+						Temp = Temp -> Right_child; //오른쪽 자식으로 이동
 					}
 				}
 			}
 			cout << " 새 노드 추가 성공 " << nData << "\n";
 		}
 	}
+
 	//트리의 크기 출력
 	void TreeSize()
 	{
-		cout << " 이진 탐색 트리의 크기 :  " << this->nTree_size << "\n";
+		cout << " 이진 탐색 트리의 크기 :  " << this -> nTree_size << "\n";
 	}
 	//트리에서 특정 값을 가진 노드를 검색 
-	NODE *findNode( NODE *temp, int nData )
+	NODE *FindNode( NODE *Temp, int nData )
 	{
-		if ( temp == NULL ) //노드가 NULL이면 값이 없음
+		if ( Temp == NULL ) //노드가 NULL이면 값이 없음
 		{
 			cout << "데이터를 찾지 못했습니다!\n";
 			return NULL;
 		}
-		else if ( temp -> nData == nData ) //값이 현재 노드와 일치하면 찾음
+		else if ( Temp -> nData == nData ) //값이 현재 노드와 일치하면 찾음
 		{
 			cout << "데이터를 찾았습니다!\n";
-			return temp;
+			return Temp;
 		}
-		else if ( temp -> nData > nData ) //값이 작으면 왼쪽으로 이동
+		else if ( Temp -> nData > nData ) //값이 작으면 왼쪽으로 이동
 		{
-			return findNode( temp -> left_child, nData );
+			return FindNode( Temp -> Left_child, nData );
 		}
-		else if ( temp -> nData < nData ) //값이 크면 오른쪽으로 이동
+		else if ( Temp -> nData < nData ) //값이 크면 오른쪽으로 이동
 		{
-			return findNode( temp -> right_child, nData );
+			return FindNode( Temp -> Right_child, nData );
 		}
 	}
+
 	//트리에서 특정 값을 가진 노드를 삭제
-	NODE *deleteNode( NODE *root, int nData )
+	NODE *DeleteNode( NODE *Root, int nData )
 	{
-		if ( root == NULL ) //노드가 없으면 작업 종료
+		if ( Root == NULL ) //노드가 없으면 작업 종료
 		{
-			return root;
+			return Root;
 		}
-		if ( nData < root -> nData) //값이 작으면 왼쪽 자식으로 이동
+		if ( nData < Root -> nData) //값이 작으면 왼쪽 자식으로 이동
 		{
-			root -> left_child = deleteNode( root -> left_child, nData );
+			Root -> Left_child = DeleteNode( Root -> Left_child, nData );
 		}
-		else if ( nData > root -> nData ) //값이 크면 오른쪽 자식으로 이동
+		else if ( nData > Root -> nData ) //값이 크면 오른쪽 자식으로 이동
 		{
-			root -> right_child = deleteNode( root -> right_child, nData );
+			Root -> Right_child = DeleteNode( Root -> Right_child, nData );
 		}
 		else //삭제할 노드를 찾은 경우
 		{
-			NODE *temp;
-			if ( root -> left_child == NULL ) //왼쪽 자식이 없는 경우
+			NODE *Temp;
+			if ( Root -> Left_child == NULL ) //왼쪽 자식이 없는 경우
 			{
-				temp = root -> right_child; //오른쪽 자식으로 대체
-				delete root;
-				return temp;
+				Temp = Root -> Right_child; //오른쪽 자식으로 대체
+				delete Root;
+				return Temp;
 			}
-			else if ( root -> right_child == NULL ) //오른쪽 자식이 없는 경우
+			else if ( Root -> Right_child == NULL ) //오른쪽 자식이 없는 경우
 			{
-				temp = root -> left_child; //왼쪽 자식으로 대체
-				delete root;
-				return temp;
+				Temp = Root -> Left_child; //왼쪽 자식으로 대체
+				delete Root;
+				return Temp;
 			}
 			else //두 자식이 있는 경우
 			{
-				temp = findMinNode( root -> right_child ); //오른쪽 서브트리의 최소값 찾기
-				root -> nData = temp -> nData; //현재 노드 데이터 교체
-				root -> right_child = deleteNode( root -> right_child, temp -> nData ); //최소값 삭제
+				Temp = FindMinNode( Root -> Right_child ); //오른쪽 서브트리의 최소값 찾기
+				Root -> nData = Temp -> nData; //현재 노드 데이터 교체
+				Root -> Right_child = DeleteNode( Root -> Right_child, Temp -> nData ); //최소값 삭제
 			}
 		}
-		return root;
+		return Root;
 	}
+
 	//오른쪽 서브트리에서 최소값을 가진 노드를 찾음
-	NODE *findMinNode( NODE *root )
+	NODE *FindMinNode( NODE *Root )
 	{
-		NODE *temp = root;
-		while ( temp -> left_child != NULL )
+		NODE *Temp = Root;
+		while ( Temp -> Left_child != NULL )
 		{
-			temp = temp -> left_child; //왼쪽으로 계속 이동
+			Temp = Temp -> Left_child; //왼쪽으로 계속 이동
 		}
-		return temp;
+		return Temp;
 	}
+
 	//중위 순회
-	NODE *inorderTraversal( NODE *root )
+	NODE *InorderTraversal( NODE *Root )
 	{
-		if ( root == NULL ) 
+		if ( Root == NULL ) 
 		{
 			return NULL;
 		}
-		inorderTraversal( root->left_child );
-		cout << root -> nData << ' ';
-		inorderTraversal( root -> right_child );
+		InorderTraversal( Root->Left_child );
+		cout << Root -> nData << ' ';
+		InorderTraversal( Root -> Right_child );
 	}
+
 	//전위 순회
-	NODE *preorderTraversal( NODE *root )
+	NODE *PreorderTraversal( NODE *Root )
 	{
-		if ( root == NULL )
+		if ( Root == NULL )
 		{
 			return NULL;
 		}
-		cout << root -> nData << ' ';
-		preorderTraversal( root -> left_child );
-		preorderTraversal( root -> right_child );
+		cout << Root -> nData << ' ';
+		PreorderTraversal( Root -> Left_child );
+		PreorderTraversal( Root -> Right_child );
 	}
+
 	//후위 순회
-	NODE *postorderTraversal( NODE *root )
+	NODE *PostorderTraversal( NODE *Root )
 	{
-		if ( root == NULL )
+		if ( Root == NULL )
 		{
 			return NULL;
 		}
-		postorderTraversal( root -> left_child );
-		postorderTraversal( root -> right_child );
-		cout << root -> nData << ' ';
+		PostorderTraversal( Root -> Left_child );
+		PostorderTraversal( Root -> Right_child );
+		cout << Root -> nData << ' ';
 	}
+
 	//레벨 순회
-	void levelOrderTraversal(NODE* root)
+	void LevelOrderTraversal(NODE* Root)
 	{
-		if (root == NULL) // 트리가 비어있으면 종료
+		if (Root == NULL) // 트리가 비어있으면 종료
 		{
 			cout << "트리가 비어있습니다.\n";
 			return;
 		}
-		queue<NODE*> q; // 노드를 저장할 큐
-		q.push(root);   // 루트 노드를 큐에 추가
+		queue<NODE*> Q; // 노드를 저장할 큐
+		Q.push( Root );   // 루트 노드를 큐에 추가
 
-		while (!q.empty())
+		while (!Q.empty())
 		{
-			NODE* current = q.front(); // 큐의 앞에 있는 노드 가져오기
-			q.pop();                   // 큐에서 제거
-			cout << current->nData << " "; // 현재 노드의 값 출력
+			NODE *Current = Q.front(); // 큐의 앞에 있는 노드 가져오기
+			Q.pop();                   // 큐에서 제거
+			cout << Current->nData << " "; // 현재 노드의 값 출력
 
 			// 왼쪽 자식이 있으면 큐에 추가
-			if (current->left_child != NULL)
+			if ( Current -> Left_child != NULL )
 			{
-				q.push(current->left_child);
+				Q.push( Current -> Left_child );
 			}
 			// 오른쪽 자식이 있으면 큐에 추가
-			if (current->right_child != NULL)
+			if ( Current -> Right_child != NULL )
 			{
-				q.push(current->right_child);
+				Q.push( Current -> Right_child );
 			}
 		}
 		cout << "\n";
 	}
 
 };
+
 int main()
 {
 	int nNum;
 	nNum = 1000000; //초기 반복 횟수
 	string Command; //사용자로부터 입력받을 명령어 저장 변수
-	CBinarySearchTree bst; //이진 탐색 트리 객체 생성
+	CTree2 Bst; //이진 탐색 트리 객체 생성
 	while ( nNum )
 	{
 		cin >> Command; //명령어 입력
@@ -812,43 +849,43 @@ int main()
 		{
 			int nData;
 			cin >> nData;
-			bst.AddNode(nData);
+			Bst.AddNode(nData);
 		}
 		else if ( Command == "find" )
 		{
 			int nData;
 			cin >> nData;
-			bst.findNode( bst.root, nData );
+			Bst.FindNode( Bst.Root, nData );
 		}
 		else if ( Command == "delete" )
 		{
 			int nData;
 			cin >> nData;
-			bst.root = bst.deleteNode( bst.root, nData );
+			Bst.Root = Bst.DeleteNode( Bst.Root, nData );
 		}
 		else if ( Command == "inorder" )
 		{
-			bst.inorderTraversal( bst.root );
+			Bst.InorderTraversal( Bst.Root );
 			cout << "\n";
 		}
 		else if ( Command == "preorder" )
 		{
-			bst.preorderTraversal( bst.root );
+			Bst.PreorderTraversal( Bst.Root );
 			cout << "\n";
 		}
 		else if ( Command == "postorder" )
 		{
-			bst.postorderTraversal( bst.root );
+			Bst.PostorderTraversal( Bst.Root );
 			cout << "\n";
 		}
 		else if (Command == "levelorder")
 		{
-			bst.levelOrderTraversal(bst.root);
+			Bst.LevelOrderTraversal(Bst.Root);
 			cout << "\n";
 		}
 		else if ( Command == "size" )
 		{
-			bst.TreeSize();
+			Bst.TreeSize();
 		}
 		else
 		{
@@ -856,8 +893,8 @@ int main()
 		}
 	}
 	//프로그램 종료 전 트리의 모든 노드 삭제 및 메모리 정리
-	bst.deleteAll( bst.root );
-	bst.root = NULL; //포인터가 해제된 메모리 영역 가리킴 방지
+	Bst.DeleteAll( Bst.Root );
+	Bst.Root = NULL; //포인터가 해제된 메모리 영역 가리킴 방지
 	return 0;
 }
 ```
